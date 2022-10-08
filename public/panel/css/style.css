@@ -1,0 +1,4 @@
+/* Fix fixed chrome bug */
+.fc-scrollgrid-section-liquid {
+  height: 1px !important;
+}

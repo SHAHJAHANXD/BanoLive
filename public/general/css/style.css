@@ -1,0 +1,987 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+.fb{
+    font-weight: 600;
+}
+.img-fit{
+    object-fit: cover;
+}
+.theme-colour{
+
+}
+.theme-top-colour{
+
+}
+.theme-footer-colour{
+    background-color: #141318;
+    color: white;
+
+}
+.theme-bottom-colour{
+
+}
+.opa-black{
+    background-color: rgba(0,0,0,0.3);
+}
+.logo-header{
+    min-height:50px;
+    min-width: 200px;
+}
+.ch-6{
+    font-size: 1.0em;
+    word-spacing: 1px;
+    letter-spacing: 2px;
+}
+.ch-7{
+    font-size: 0.9em;
+    word-spacing: 0.7px;
+    letter-spacing: 1px;
+}
+.ch-5{
+    font-size: 0.7em;
+    word-spacing: 0.7px;
+    letter-spacing: 1px;
+}
+.ch-1{
+    font-size: 22px;
+    word-spacing: 1px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: black;
+}
+.ch-2{
+    font-size: 1.1em;
+    word-spacing: 1px;
+    letter-spacing: 1px;
+    color: black;
+}
+
+.rounded-15{
+    border-radius: 15px;
+}
+.rounded-10{
+    border-radius: 10px;
+}
+/*Social icons Header*/
+
+/*Social icons END*/
+/* Header Nav Bar*/
+.navbar-custom ul li a{
+    color: white;
+    font-size: 0.8em;
+}
+.navbar-custom ul li a:hover{
+    border-bottom: 2px solid #C99E50;
+    color: #C99E50;
+}
+.navbar-custom ul li a.active{
+    border-bottom: 2px solid #C99E50;
+    color: #C99E50;
+}
+/* Header Nav Bar End*/
+/* Header Back Image*/
+.header-back-img {
+    background:url('../img/header-back-image.jpg') no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+}
+
+.account-created-box-2{
+    border-radius: 15px;
+    border: 2px dashed lightgray;
+
+
+    position: relative;
+    overflow: hidden;
+}
+.account-created-box-2 input{
+    opacity: 0;
+    right:0px;
+    left: 0px;
+    cursor: pointer;
+}
+.account-created-box-1{
+    min-height: 280px;
+}
+
+.account-created-box-1{
+
+}
+
+.account-created-bullet ul {
+    list-style: none;
+}
+
+.account-created-bullet ul li::before {
+    content: "\2022";
+    color: red;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+    margin-top: 5px;
+}
+
+
+/* Header Back Image End*/
+/* footer Back Image*/
+.footer-back-img {
+    background:url('../img/header-back-image.jpg') no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+}
+
+
+/* footer Back Image End*/
+.hero-background {
+    background:url('../img/banner.jpg') no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    padding-bottom: 120px;
+}
+.hero-background .hero-box{
+    max-width: 450px;
+    padding-top: 75px;
+}
+.hero-background .hero-box p{
+    color: white;
+}
+.hero-background .hero-box-icon img{
+    max-width: 150px;
+    max-height: 200px;
+}
+
+/* Home Tab Box*/
+
+.home-tab-box .nav-link{
+    color: black;
+    margin-right: 15px;
+    border-radius: 100px;
+}
+.home-tab-box .nav-link:hover{
+    border: none;
+    border-radius: 100px;
+    background-color: red;
+    color: white;
+    margin-right: 15px;
+}
+.home-tab-box .nav-link.active{
+    border: none;
+    border-radius: 100px;
+    background-color: red;
+    color: white;
+    margin-right: 15px;
+}
+/* Home Tab Box End*/
+/* Live User card */
+.live-user-card .card-body img{
+    margin-top: 130px;
+    border: 4px solid #fff;
+    padding: 0px;
+    height: 55px;
+    width: 55px;
+}
+
+/* Live User card End*/
+/* Pagination*/
+.pagination nav ul li a{
+    color:#C99E50;
+    border: 1px solid #C99E50;
+
+}
+.pagination nav ul li a:hover{
+    color:#fff;
+    background-color: #C99E50;
+    border: 1px solid #C99E50;
+}
+/* Pagination end*/
+.sub-bar-background-home{
+    background: url('../img/sub-image-home.jpg') no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+}
+/* Home Agent Box*/
+
+/* Home Agent Box End*/
+/* News Letter*/
+.news-letter{
+    background-color: #EBF8FF;
+}
+.news-letter .c-round img{
+    border-radius: 10px;
+}
+/* News Letter End */
+/*-----------Form Style----------------*/
+.form-control {
+    padding: 15px;
+    background-color: #fdfdfd;
+    border: 1px solid #d7d7d7;
+    border-radius: 8px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding: 15px;
+    background-color: #fdfdfd;
+    border: 1px solid #d7d7d7;
+    border-radius: 8px;
+    line-height: 24px;
+}
+.select2-container--default .select2-selection--single {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: inherit;
+}
+.select2-container .select2-selection--single {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: auto;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 14px;
+    right: 9px;
+}
+/*----------/Form Style----------------*/
+/*----------Footer Image Box----------------*/
+
+.footer-image-box img{
+    width: 150px;
+}
+.footer-image-box p{
+    font-size: 0.9em;
+    margin-top: 20px;
+}
+/*----------Footer Image Box END----------------*/
+/*----------Image Footer Nav Bar----------------*/
+.footer-back-img .navibar li a{
+    color: black;
+    text-decoration: none;
+}
+footer-back-img .navibar ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+footer-back-img .navibar li a:hover{
+    color: gray;
+}
+footer-back-img .navibar li a{
+    color: #fff;
+
+}
+.footer-back-img .navibar li{
+    padding-bottom: 10px;
+
+}
+footer .footer-back-img .navibar{
+    padding: 0;
+    margin-top: 0;
+}
+/*----------Image Footer Nav Bar End----------------*/
+/*----------Footer Nav Bar----------------*/
+.navibar li a{
+    color: black;
+    text-decoration: none;
+}
+.navibar ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.navibar li a:hover{
+    color: gray;
+}
+footer .navibar li a{
+    color: #fff;
+
+}
+footer .navibar li{
+    padding-bottom: 10px;
+
+}
+footer .navibar{
+    padding: 0;
+    margin-top: 0;
+}
+/*----------Footer Nav Bar End----------------*/
+/*----------Footer Social icons----------------*/
+.theme-footer-colour a.social-link-footer:link, a.social-link-footer:visited,  a.social-link-footer:active {
+    text-decoration: none;
+    color: white;
+    border: 2px solid white;
+    padding: 2px;
+    margin: auto auto;
+    height: 30px;
+    width: 30px;
+    background-color: white;
+    border-radius: 30px;
+
+}
+.theme-footer-colour a.social-link-footer:hover {
+    background-color: #ED2D21;
+    color: white;
+    border: 2px solid black;
+}
+
+
+/*----------Footer Social icons End----------------*/
+/*----------Image Footer Social icons----------------*/
+.footer-back-img a.social-link-footer:link, a.social-link-footer:visited,  a.social-link-footer:active {
+    text-decoration: none;
+    color: black;
+    border: 2px solid white;
+    padding: 2px;
+    margin: auto auto;
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    background-color: white;
+
+}
+.footer-back-img a.social-link-footer:hover {
+    background-color: #ED2D21;
+    color: black;
+}
+/*----------Image Footer Social icons End----------------*/
+/*----------Footer bottom bar----------------*/
+footer .bottom-emboss{
+    color: #7E663C;
+    font-weight: bold;
+}
+footer .bottom-desc{
+    color: gray;
+    font-size: 0.9em;
+}
+/*----------Footer bottom bar End----------------*/
+/*----------Pages Hero----------------*/
+.faqs-page-back{
+    background: linear-gradient(0deg, rgba(19, 19, 19, 0.73), rgba(2, 2, 2, 0.72)), url('../img/faq-back-image.jpg') no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 380px;
+}
+.download-page-back {
+    background: url('../img/download-background.jpg') no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+/*----------Pages Hero END----------------*/
+.other-hero-back{
+    color: white;
+    margin-top: 150px;
+}
+
+
+
+/*----------Over Lay Box ----------------*/
+
+.box-overlay .over-image {
+    opacity: 0.2;
+}
+
+.box-overlay .over-box {
+    opacity: 1;
+}
+
+.over-image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+.over-box {
+    transition: .5s ease;
+    opacity: 0;
+    position: relative;
+    text-align: center;
+    margin: -200px auto;
+}
+.over-content {
+    padding: 16px 32px;
+}
+/*----------Over Lay Box END----------------*/
+/*----------Home live Card -----------------*/
+.h-live-card .card-body{
+    padding: 10px 10px 5px 5px
+}
+
+.h-live-card .rounded-img{
+   height:50px; width:50px;
+   position: absolute;
+   margin-top: 125px;
+   border: 3px solid #fff;
+}
+/*----------Home live Card END--------------*/
+/* Media Query*/
+@media only screen and (min-width: 900px) {
+
+}
+@media only screen and (max-width: 900px) {
+
+}
+
+/* Media Query End*/
+
+/*----------Social Media Part-----------------------------*/
+
+/*Search Bar----------*/
+.search-bar span{
+    border-right: none;
+    border-radius: 25px;
+    color: lightgray;
+}
+.search-bar span.connect{
+    border-left: none;
+    border-radius: 25px;
+    color: lightgray;
+}
+
+.search-bar input{
+    border-left: 0px;
+    border-right: 0px;
+    border-radius: 25px;
+    height: 35px;
+    border-color: #E6E6E6;
+}
+.search-bar input:focus{
+    border-color: lightgray;
+    box-shadow: none;
+}
+/*Search Bar End------*/
+
+.socialP-head-icon-box{
+    height: 35px;
+    width: 35px;
+    float: right;
+    text-align: center;
+}
+
+.socialP-head-icon-box-extra{
+     height: 45px;
+     width: 45px;
+     text-align: center;
+ }
+.user-box .form-select{
+     margin-top: -5px;
+ }
+.user-box .form-select:focus{
+    box-shadow: none;
+}
+.socialP-head-icon-box-lg{
+    height: 50px;
+    width: 50px;
+    margin:auto;
+}
+.social-media .dropstart .social li a{
+    padding: 10px;
+    text-decoration: none;
+}
+.social-media .dropstart .social li:hover{
+    background-color: #F2F5F7;
+}
+
+
+
+/*-----------------------*/
+
+.story .div-8{
+    border-radius: 50%;
+    padding: 2px;
+    margin: 0 auto;
+
+    width: 80px;
+    height: 80px;
+}
+.story .add img{
+    border-radius: 50%;
+    padding: 2px;
+
+    display: block;
+    margin: 0 auto;
+
+    width: 70px;
+    height: 70px;
+}
+.story .add .status-icon{
+    height: 20px; width: 20px; background-color: #33A9F0; text-align: center; color:#fff; font-size: 0.7em; bottom: 0; right: 10px; border-radius: 50%; border:2px solid #fff;
+}
+.item-story {
+    border-radius: 50%;
+    padding: 2px;
+    background: radial-gradient(ellipse at 70% 70%, #ef0006 8%, #aed93c 42%, #2c0dbd 58%);
+
+    display: block;
+    margin: 0 auto;
+
+    width: 70px;
+    height: 70px;
+}
+
+
+
+.item-story img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /*border: 1px dashed white;*/
+    border: 2px solid white;
+    object-fit: cover;
+}
+
+.story .title{
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/*-----------------------*/
+
+
+
+
+
+
+
+.socialP-head-icon-box-lg-extra{
+    height: 50px;
+    width: 50px;
+    margin: auto;
+    border-radius: 50%;
+}
+.socialP-head-icon-box-extra-sm{
+    height: 25px;
+    width: 25px;
+    margin: auto;
+    border-radius: 50%;
+}
+
+.socialP-head-icon-box-extra-sm-2{
+    height: 18px;
+    width: 18px;
+    margin: auto;
+    border-radius: 50%;
+}
+
+.socialP-head-icon-box-lg .status-icon
+{
+    height: 20px; width: 20px; background-color: #33A9F0; text-align: center; color:#fff; font-size: 0.7em; bottom: 0; right: 0; border-radius: 50%; border:2px solid #fff;
+}
+
+.messages-box-sidebar .user-box .status-icon
+{
+    height: 10px; width: 10px; background-color: #4CCE49; position: absolute; top: 0; right: 0; border-radius: 50%; border:2px solid #fff;
+}
+
+.messages-box-sidebar .nav li .active{
+    background-color: white;
+    border-bottom: 2px solid #0d6efd;
+}
+.messages-box-sidebar ul{
+    display: contents;
+}
+
+.messages-box-sidebar ul a{
+    text-align: center;
+    padding: 0px;
+}
+
+
+.live-box .social-live-bar{
+    width: 100px;
+    text-align: center;
+
+}
+
+.live-box .box-h{
+    min-height: 135px;
+
+}
+.social-live-bar span{
+    left: 0;
+    top: 0;
+
+}
+.mar-auto{
+    margin: auto;
+}
+
+
+.like-avatar ul {
+    margin: 0px 0px 3px 0px!important;
+    padding: 0px !important;
+    display: inline-block;
+}
+
+.like-avatar li {
+    list-style: none;
+    margin: 0px 0px 0px -8px !important;
+    padding: 0px 0px 0px 0px !important;
+    display: inline-block;
+}
+
+.like-avatar li a img {
+    width: 25px;
+    height: 25px;
+    margin: 0px !important;
+    border: 2px solid #fff;
+}
+
+
+.profile-cover{
+    height: 320px;
+    object-fit: cover;
+    width: 100% !important;
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+
+
+.profile-dp .img{
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+
+.profile-avatar img{
+    height: 120px;
+    width: 120px;
+}
+
+.profile-avatar .cam-btn{
+    height: 30px;
+    width: 30px;
+
+}
+.profile-avatar-div{
+    top:-4rem;
+
+}
+
+.level-btn{
+    background-color: red; padding:6px 20px 6px 20px; border-radius: 0px 25px 25px 0px; position: relative;
+}
+.profile-avatar-div .nav li{
+
+    border-radius: 25px;
+    margin: 2px;
+    border: 1px solid #33A9F0;
+}
+.profile-avatar-div .nav li a{
+    color: #33A9F0;
+}
+.profile-avatar-div .nav li a:hover{
+    color: #fff;
+}
+.profile-avatar-div .nav{
+    margin-top: -40px;
+}
+.profile-avatar-div .nav li:hover{
+    background-color: #259DE2;
+    color: white;
+}
+
+.profile-avatar-div .nav li .active{
+    background-color: #259DE2;
+    color: white;
+    border-radius: 25px;
+    border: 0px;
+}
+
+
+.circle-box{
+    height: 30px;
+    width: 30px
+}
+
+.img-box img{
+    min-height: 100px;
+    padding-bottom: 5px;
+    border-radius: 15px;
+}
+
+.follower-box{
+    min-height: 200px;
+    margin-bottom: 10px;
+    width: 100%;
+    border-radius: 15px;
+}
+.follower-box .avatar{
+    height: 70px;
+    width: 70px;
+
+}
+
+
+/*----------Custom Tab-------*/
+.custom-tab ul li .nav-link{
+
+    border-radius: 25px;
+    margin: 2px;
+    border: 1px solid #33A9F0;
+    color: #33A9F0;
+    margin-bottom: 5px;
+    padding: 2px 20px 2px 20px;
+    font-size: 0.8em;
+}
+
+.custom-tab ul li .nav-link:hover{
+    background-color: #259DE2;
+    color: white;
+}
+
+
+/*----------Custom Tab-End---*/
+/*----------Custom Messenger---*/
+.messenger ul li button{
+    text-align: center;
+    width: 100%;
+    background-color: #fff;
+    color: black;
+    font-weight: 600;
+    font-size: 0.8em;
+}
+
+.messenger ul li .nav-link.active{
+
+    background-color: #fff;
+    color: black;
+    border-bottom: 2px solid red;
+    border-radius: 0px;
+}
+.messenger ul li .nav-link:hover{
+    color: black;
+}
+
+.messenger .user-active{
+    background-color: #f8f9fa;
+}
+.messenger .user-img{
+    height: 35px;
+    width: 35px;
+}
+.fixed-content {
+    top:0;
+    bottom:0;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    width: 100%;
+    height: auto;
+}
+.scroll{
+    overflow-y:scroll;
+    overflow-x:hidden;
+    max-height: 400px;
+    z-index: 3333;
+}
+.badge{
+
+    border-radius: 50%;
+    padding: 5px;
+
+}
+
+.messenger-input .form-control{
+    background-color: #fff;
+    height: 15px;
+
+    border: 0px;
+    font-size: 0.9em;
+    color: gray;
+
+}
+.messenger-input span{
+    background-color: #fff;
+    border: 0px;
+    margin:3px;
+    padding: 0px;
+}
+
+
+
+
+.live-messenger-input form .form-control{
+    background-color: #333333;
+    height: 15px;
+    width: 80px;
+    border: 0px;
+    font-size: 0.7em;
+    color: white;
+
+}
+.live-messenger-input form span{
+    background-color: #333333;
+    border: 0px;
+}
+.live-messenger-input form span img{
+    height: 15px;
+    width: 15px;
+}
+
+.messenger-box-side-bar .icon{
+    height: 30px;
+    width: 30px;
+}
+.messenger-box-side-bar .box-h{
+    height: 140px;
+}
+/*-------Custom Messenger-End--*/
+.gallery-box{
+    height: 200px;
+    border-radius: 20px;
+    width: 100%;
+}
+.gallery-box .explore-icon{
+display: none;
+}
+.gallery-box:hover .explore-icon{
+
+    display: inline;
+}
+.gallery-box:hover .over-lay{
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: white;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+.social-media-menu .dropdown-menu{
+    width: 300px;
+}
+
+.social-media-menu .dropdown-menu .dropdown-item{
+    font-size: 0.8em;
+    font-weight: 600;
+    padding: 15px;
+
+
+
+}
+.social-media-menu .dropdown-menu .dropdown-item:hover{
+    background-color: #f8f9fa;
+    color: black;
+}
+
+.setting-block-navbar .nav a{
+    font-size: 0.9em;
+    color: black;
+}
+.setting-block-navbar .nav .active{
+    text-align: left;
+    background-color: #F3F3F3;
+    color: black;
+}
+
+
+.scroll {
+    overflow: scroll;
+}
+
+.border-dashed{
+    border: 1px dashed;
+}
+
+.cursor-p
+{
+    cursor: pointer;
+}
+
+.file-div{
+    position: absolute; top:20%; height: 20px; width: 20px; opacity: 0;
+}
+
+
+.scroll::-webkit-scrollbar {
+    width: 12px;
+}
+
+.scroll::-webkit-scrollbar-track {
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+    border-radius: 10px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+.focus-border-none:focus{
+    box-shadow: none;
+}
+/*----Live Chat Start-----*/
+.live-chat .screen{
+    max-height: 540px
+}
+
+
+.live-chat .chat-box .input-group input{
+    height: 40px;
+    overflow-y:hidden;
+    padding: 10px;
+    background-color: #333333;
+    border: none;
+    color: white;
+    border-radius: 25px;
+}
+.live-chat .chat-box .input-group .input-group-text{
+    height: auto;
+    width: auto;
+    padding: 0px;
+    background-color: #333333;
+    border: 0px;
+    border-radius: 25px;
+
+}
+.live-chat .chat-box .input-group input:focus{
+    box-shadow: none;
+}
+/*----Live Chat End-------*/
+/*----------Social Media Part End-------------------------*/
+/* Media Query*/
+@media only screen and (min-width: 900px) {
+
+}
+@media only screen and (max-width: 576px) {
+    .messenger .user-img{
+        height: 15px;
+        width: 15px;
+    }
+
+
+    .profile-cover{
+        height: 170px;
+    }
+
+
+    .profile-avatar img{
+        height: 90px;
+        width: 90px;
+    }
+
+}
+
+/* Media Query End*/
