@@ -399,8 +399,8 @@ class ComposerStaticInit327ae42dfb792289fc465f58a5155a4d
         ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri-interfaces/src',
-            1 => __DIR__ . '/..' . '/league/uri/src',
+            0 => __DIR__ . '/..' . '/league/uri/src',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces/src',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -623,6 +623,7 @@ class ComposerStaticInit327ae42dfb792289fc465f58a5155a4d
         'App\\Http\\Controllers\\SignUpController' => __DIR__ . '/../..' . '/app/Http/Controllers/SignUpController.php',
         'App\\Http\\Controllers\\SocialController' => __DIR__ . '/../..' . '/app/Http/Controllers/SocialController.php',
         'App\\Http\\Controllers\\VehiclesController' => __DIR__ . '/../..' . '/app/Http/Controllers/VehiclesController.php',
+        'App\\Http\\Controllers\\bannerController' => __DIR__ . '/../..' . '/app/Http/Controllers/bannerController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckIsLogin' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckIsLogin.php',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\MobileController;
 use App\Http\Controllers\SignInController;
 use App\Http\Controllers\SignOutController;
@@ -77,7 +78,7 @@ Route::get('/mobile/become-a-partner', [mobileController::class, 'becomeAPartner
 
 
 
-Route::group(['middleware' => ['web','web.loginRedirection']], function () {
+Route::group(['middleware' => ['web', 'web.loginRedirection']], function () {
 
 
     //  For Web Application
@@ -94,7 +95,6 @@ Route::group(['middleware' => ['web','web.loginRedirection']], function () {
     Route::get('/forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('frontend.forgotPassword');
     Route::get('/validate-code', [ForgotPasswordController::class, 'validateCode'])->name('frontend.validateCode');
     Route::get('/reset-password', [ForgotPasswordController::class, 'changePassword'])->name('frontend.changePassword');
-
 });
 
 
@@ -102,9 +102,9 @@ Route::group(['middleware' => ['web','web.loginRedirection']], function () {
 
 
 
-Route::group(['middleware' => ['web','web.preventBackHistory']], function () {
+Route::group(['middleware' => ['web', 'web.preventBackHistory']], function () {
 
-    Route::group(['middleware' => ['web','web.isLogin']], function () {
+    Route::group(['middleware' => ['web', 'web.isLogin']], function () {
 
 
 
@@ -169,6 +169,14 @@ Route::group(['middleware' => ['web','web.preventBackHistory']], function () {
 
         Route::get('/admin/advertisements/list', [DashboardController::class, 'advertisements'])->name('backend.advertisements');
 
+        //Route For Banners:
+        Route::get('/admin/banners', [BannerController::class, 'index'])->name('banner.List');
+        Route::post('/admin/banners-store', [BannerController::class, 'store'])->name('banner.store');
+        Route::delete('/admin/banners-delete/{id}', [BannerController::class, 'destroy'])->name('banner.delete');
+        Route::post('/admin/update-status', [BannerController::class, 'updateStatus'])->name('banner.updateStatus');
+        //Route For Banners end
+
+
         Route::get('/admin/newsfeeds/list', [DashboardController::class, 'newsfeeds'])->name('backend.newsfeeds');
 
         Route::get('/admin/stories/list', [DashboardController::class, 'stories'])->name('backend.stories');
@@ -231,30 +239,29 @@ Route::group(['middleware' => ['web','web.preventBackHistory']], function () {
 
 
 
-//        Route::get('/admin/posts', [DashboardController::class, 'posts'])->name('backend.posts');
+        //        Route::get('/admin/posts', [DashboardController::class, 'posts'])->name('backend.posts');
 
 
-//        Route::get('/admin/news', [DashboardController::class, 'news'])->name('backend.news');
-//        Route::get('/admin/tutorials-and-articles', [DashboardController::class, 'tutorialsAndArticles'])->name('backend.tutorialsAndArticles');
-//        Route::get('/admin/database', [DashboardController::class, 'database'])->name('backend.database');
-//        Route::get('/admin/knowledge', [DashboardController::class, 'knowledge'])->name('backend.knowledge');
-//
-//
-//        Route::get('/admin/notifications', [DashboardController::class, 'notifications'])->name('admin.notifications');
+        //        Route::get('/admin/news', [DashboardController::class, 'news'])->name('backend.news');
+        //        Route::get('/admin/tutorials-and-articles', [DashboardController::class, 'tutorialsAndArticles'])->name('backend.tutorialsAndArticles');
+        //        Route::get('/admin/database', [DashboardController::class, 'database'])->name('backend.database');
+        //        Route::get('/admin/knowledge', [DashboardController::class, 'knowledge'])->name('backend.knowledge');
+        //
+        //
+        //        Route::get('/admin/notifications', [DashboardController::class, 'notifications'])->name('admin.notifications');
 
-//        Route::get('/admin/packages', [DashboardController::class, 'packages'])->name('backend.packages');
+        //        Route::get('/admin/packages', [DashboardController::class, 'packages'])->name('backend.packages');
 
-//        Route::get('/admin/countries', [DashboardController::class, 'countries'])->name('backend.countries');
-//        Route::get('/admin/provinces', [DashboardController::class, 'provinces'])->name('backend.provinces');
-//        Route::get('/admin/cities', [DashboardController::class, 'cities'])->name('backend.cities');
-//        Route::get('/admin/areas', [DashboardController::class, 'areas'])->name('backend.areas');
-//        Route::get('/admin/locations', [DashboardController::class, 'locations'])->name('backend.locations');
+        //        Route::get('/admin/countries', [DashboardController::class, 'countries'])->name('backend.countries');
+        //        Route::get('/admin/provinces', [DashboardController::class, 'provinces'])->name('backend.provinces');
+        //        Route::get('/admin/cities', [DashboardController::class, 'cities'])->name('backend.cities');
+        //        Route::get('/admin/areas', [DashboardController::class, 'areas'])->name('backend.areas');
+        //        Route::get('/admin/locations', [DashboardController::class, 'locations'])->name('backend.locations');
 
 
 
 
     });
-
 });
 
 
@@ -262,23 +269,20 @@ Route::group(['middleware' => ['web','web.preventBackHistory']], function () {
 
 
 
-route::get('/setting/clear-cache', function() {
+route::get('/setting/clear-cache', function () {
     $exitCode = Artisan::call('config:clear');
     $exitCode = Artisan::call('cache:clear');
     $exitCode = Artisan::call('config:cache');
     return 'Cleared';
 });
 
-route::get('/setting/storage', function() {
+route::get('/setting/storage', function () {
     $exitCode = Artisan::call('storage:link');
     return 'Storage Done';
 });
 
 
-route::get('/setting/key-generate', function() {
+route::get('/setting/key-generate', function () {
     $exitCode = Artisan::call('key:generate');
     return 'Key Generated';
 });
-
-
-

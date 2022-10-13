@@ -1,6 +1,5 @@
 @include('.panel.general.head')
 
-
 <body class="vertical-layout vertical-menu-modern 2-columns navbar-floating menu-expanded footer-static" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="" style="" data-framework="laravel" data-asset-path="index.html">
 
 

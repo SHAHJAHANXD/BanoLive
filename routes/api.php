@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\BannerController;
 use App\Http\Controllers\API\SettingController;
 use App\Http\Controllers\API\SubscriberController;
 use Illuminate\Http\Request;
@@ -122,7 +123,9 @@ Route::post('category/sub-child/update', [UserController::class, 'categorySubChi
 Route::post('category/sub-child/view', [UserController::class, 'categorySubChildView']);
 
 
-
+//Routes for Banners:
+Route::get('banners/list', [BannerController::class, 'getListOfbanners']);
+//End Routes for Banners
 
 
 Route::post('contact', [UserController::class, 'contact']);
@@ -240,5 +243,4 @@ Route::post('social/follow-back', [SettingController::class, 'followBack']);
 Route::middleware('auth:api')->get('/user', function (Request $request) {
 
     return $request->user();
-
 });

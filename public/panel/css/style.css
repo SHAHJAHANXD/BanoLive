@@ -2,3 +2,16 @@
 .fc-scrollgrid-section-liquid {
   height: 1px !important;
 }
+
+
+/* Image Styling */
+
+.image_length{
+  width: 170px;
+  object-fit: cover;
+  height: fit-content;
+}
+
+#image {
+  display: none;
+}

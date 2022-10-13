@@ -45,6 +45,7 @@ return array(
     'App\\Http\\Controllers\\SignUpController' => $baseDir . '/app/Http/Controllers/SignUpController.php',
     'App\\Http\\Controllers\\SocialController' => $baseDir . '/app/Http/Controllers/SocialController.php',
     'App\\Http\\Controllers\\VehiclesController' => $baseDir . '/app/Http/Controllers/VehiclesController.php',
+    'App\\Http\\Controllers\\bannerController' => $baseDir . '/app/Http/Controllers/bannerController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
     'App\\Http\\Middleware\\CheckIsLogin' => $baseDir . '/app/Http/Middleware/CheckIsLogin.php',

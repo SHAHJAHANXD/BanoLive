@@ -168,6 +168,16 @@
 
 
 
+            {{--Banners--}}
+            @if($User->user_type_slug=='administrator')
+                <li class="nav-item">
+                    <a href="{{url('admin/banners')}}" class="d-flex align-items-center" target="_self">
+                        <i data-feather='file-minus'></i>
+                        <span class="menu-title text-truncate">Banners</span>
+                    </a>
+                </li>
+            @endif
+
             {{--Newsfeeds--}}
             @if($User->user_type_slug=='administrator')
                 <li class="nav-item">
