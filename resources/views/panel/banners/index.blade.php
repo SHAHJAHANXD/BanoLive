@@ -35,7 +35,7 @@
 
                             </div>
                             <div class="table-responsive">
-                                <table id="example" class="table">
+                                <table id="Banner" class="table">
                                     <thead>
                                         <tr>
                                             <th>S.no</th>

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\API\BannerController;
 use App\Http\Controllers\API\SettingController;
 use App\Http\Controllers\API\SubscriberController;
 use Illuminate\Http\Request;
@@ -30,7 +29,11 @@ use App\Http\Controllers\API\CheckInOutController;
 Route::post('forgot', [UserController::class, 'forgot']);
 Route::post('validate', [UserController::class, 'validateCode']);
 Route::post('change-password', [UserController::class, 'changePassword']);
+Route::post('/updatepassword', [UserController::class, 'updatepassword']);
 Route::post('login', [UserController::class, 'login']);
+Route::post('sign-up/user/social-sign-up', [UserController::class, 'SignUpSocialUser']);
+Route::post('user/forgetpassword', [UserController::class, 'forgetpassword']);
+Route::get('/user/verifyotp', [UserController::class, 'verifyotp'])->middleware('auth:api');
 
 
 Route::post('sign-up/upload/user/picture', [UserController::class, 'signUpUploadUserPicture']);
@@ -48,7 +51,9 @@ Route::post('sign-up/agency', [UserController::class, 'SignUpAgency']);
 Route::post('sign-up/host', [UserController::class, 'SignUpHost']);
 
 Route::post('sign-up/agent', [UserController::class, 'SignUpAgent']);
-Route::post('sign-up/user', [UserController::class, 'SignUpUser']);
+Route::post('sign-up', [UserController::class, 'SignUpUser']);
+
+Route::post('/user/resend-code', [UserController::class, 'resendCode']);
 
 
 
@@ -95,6 +100,12 @@ Route::post('contact/delete', [UserController::class, 'contactDelete']);
 Route::post('contact/view', [UserController::class, 'contactView']);
 
 
+
+//Routes for Banners:
+Route::get('banners/list', [BannerController::class, 'getListOfbanners']);
+//End Routes for Banners
+
+
 Route::post('faq/create', [UserController::class, 'faqCreate']);
 Route::post('faq/delete', [UserController::class, 'faqDelete']);
 Route::post('faq/edit', [UserController::class, 'faqEdit']);
@@ -123,9 +134,7 @@ Route::post('category/sub-child/update', [UserController::class, 'categorySubChi
 Route::post('category/sub-child/view', [UserController::class, 'categorySubChildView']);
 
 
-//Routes for Banners:
-Route::get('banners/list', [BannerController::class, 'getListOfbanners']);
-//End Routes for Banners
+
 
 
 Route::post('contact', [UserController::class, 'contact']);
@@ -188,8 +197,7 @@ Route::post('newsfeed/gallery/delete', [UserController::class, 'newsfeedGalleryD
 
 
 
-
-Route::post('story/view', [UserController::class, 'storyView']);
+Route::get('story/view', [UserController::class, 'storyView']);
 Route::post('story/create', [UserController::class, 'storyCreate']);
 Route::post('story/delete', [UserController::class, 'storyDelete']);
 Route::post('story/report', [UserController::class, 'storyReport']);

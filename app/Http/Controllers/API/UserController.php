@@ -5,14 +5,18 @@ namespace App\Http\Controllers\API;
 use Facade\FlareClient\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers;
+use App\Models\Gallery;
+use App\Models\Story;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use \Session;
-use File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controllers\BaseController
@@ -63,7 +67,6 @@ class UserController extends Controllers\BaseController
     {
 
 
-        //---------------------------Validation-------------------------------------
         $validator = Validator::make($request->all(), [
 
             'full_name' => 'required',
@@ -76,13 +79,6 @@ class UserController extends Controllers\BaseController
         if ($validator->fails()) {
             return $this->sendResponse(true, 312, null, 'Validation error, recheck all fields.');
         }
-        //---------------------------Validation-------------------------------------
-
-
-
-
-        //------------------------------Duplicate check for email----------------------------------------
-
         $usersData = DB::table('users')
             ->where('email', $request->email)
             ->count();
@@ -90,15 +86,6 @@ class UserController extends Controllers\BaseController
         if ($usersData == 1) {
             return $this->sendResponse(true, 223, null, 'Email already exist.');
         }
-
-        //------------------------------Duplicate check for email----------------------------------------
-
-
-
-
-
-        //--------------------------------------User Registration---------------------------------------------
-
         $input = $request->all(); //Store all request data in variable
         $input['user_type_id'] = 2; //Admin
         $input['country_code_id'] = $request->country_code;
@@ -130,10 +117,6 @@ class UserController extends Controllers\BaseController
         $success['full_name'] =  $user->full_name;
         $user_id = $user->id;
 
-        //-------------------------------------/User Registration---------------------------------------------
-
-
-
         if ($request->address != null) {
 
             $address_id = DB::table('addresses')->insertGetId(
@@ -149,11 +132,6 @@ class UserController extends Controllers\BaseController
                 'id'
             );
         }
-
-
-
-
-
 
         if ($request->resume_details != null) {
 
@@ -229,25 +207,15 @@ class UserController extends Controllers\BaseController
             'code' => 'https://banolive.com/sign-up/agency?admin=' . $nine_digit_code
         ];
 
-
-
-
-
         if ($success == true) {
             return $this->sendResponse(false, 200, $data, 'Admin register successfully.');
         } else {
             return $this->sendResponse(true, 233, null, 'Admin register failed.');
         }
-
-        //-------------------------------------------------------------------------
-
     }
 
     public function SignUpAgency(Request $request)
     {
-
-
-        //---------------------------Validation-------------------------------------
         $validator = Validator::make($request->all(), [
 
             'full_name' => 'required',
@@ -260,13 +228,6 @@ class UserController extends Controllers\BaseController
         if ($validator->fails()) {
             return $this->sendResponse(true, 312, null, 'Validation error, recheck all fields.');
         }
-        //---------------------------Validation-------------------------------------
-
-
-
-
-
-        //------------------------------code check----------------------------------------
 
         $AdminData = DB::table('users')
             ->where('user_type_id', 2) //Admin
@@ -276,15 +237,6 @@ class UserController extends Controllers\BaseController
         if ($AdminData == 0) {
             return $this->sendResponse(true, 223, null, 'Admin reference code not found.');
         }
-
-        //------------------------------code check----------------------------------------
-
-
-
-
-
-        //------------------------------Duplicate check for email----------------------------------------
-
         $usersData = DB::table('users')
             ->where('email', $request->email)
             ->count();
@@ -292,14 +244,6 @@ class UserController extends Controllers\BaseController
         if ($usersData == 1) {
             return $this->sendResponse(true, 223, null, 'Email already exist.');
         }
-
-        //------------------------------Duplicate check for email----------------------------------------
-
-
-
-
-        //--------------------------------------User Registration---------------------------------------------
-
         $input = $request->all(); //Store all request data in variable
         $input['user_type_id'] = 4; //Agency
         $input['country_code_id'] = $request->country_code;
@@ -333,10 +277,6 @@ class UserController extends Controllers\BaseController
         $success['full_name'] =  $user->full_name;
         $user_id = $user->id;
 
-        //-------------------------------------/User Registration---------------------------------------------
-
-
-
         if ($request->address != null) {
 
             $address_id = DB::table('addresses')->insertGetId(
@@ -352,11 +292,6 @@ class UserController extends Controllers\BaseController
                 'id'
             );
         }
-
-
-
-
-
 
         if ($request->resume_details != null) {
 
@@ -441,16 +376,10 @@ class UserController extends Controllers\BaseController
         } else {
             return $this->sendResponse(true, 233, null, 'Agency register failed.');
         }
-
-        //-------------------------------------------------------------------------
-
     }
 
     public function SignUpHost(Request $request)
     {
-
-
-        //---------------------------Validation-------------------------------------
         $validator = Validator::make($request->all(), [
 
             'full_name' => 'required',
@@ -463,13 +392,6 @@ class UserController extends Controllers\BaseController
         if ($validator->fails()) {
             return $this->sendResponse(true, 312, null, 'Validation error, recheck all fields.');
         }
-        //---------------------------Validation-------------------------------------
-
-
-
-
-
-        //------------------------------code check----------------------------------------
 
         $AgencyData = DB::table('users')
             ->where('user_type_id', 4) //Agency
@@ -480,13 +402,6 @@ class UserController extends Controllers\BaseController
             return $this->sendResponse(true, 223, null, 'Agency reference code not found.');
         }
 
-        //------------------------------code check----------------------------------------
-
-
-
-
-
-        //------------------------------Duplicate check for email----------------------------------------
 
         $usersData = DB::table('users')
             ->where('email', $request->email)
@@ -495,13 +410,6 @@ class UserController extends Controllers\BaseController
         if ($usersData == 1) {
             return $this->sendResponse(true, 223, null, 'Email already exist.');
         }
-
-        //------------------------------Duplicate check for email----------------------------------------
-
-
-
-
-        //--------------------------------------User Registration---------------------------------------------
 
         $input = $request->all(); //Store all request data in variable
         $input['user_type_id'] = 3; //Host
@@ -535,8 +443,6 @@ class UserController extends Controllers\BaseController
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['full_name'] =  $user->full_name;
         $user_id = $user->id;
-
-        //-------------------------------------/User Registration---------------------------------------------
 
 
 
@@ -644,16 +550,11 @@ class UserController extends Controllers\BaseController
         } else {
             return $this->sendResponse(true, 233, null, 'Host register failed.');
         }
-
-        //-------------------------------------------------------------------------
-
     }
 
     public function SignUpAgent(Request $request)
     {
 
-
-        //---------------------------Validation-------------------------------------
         $validator = Validator::make($request->all(), [
 
             'full_name' => 'required',
@@ -666,12 +567,6 @@ class UserController extends Controllers\BaseController
         if ($validator->fails()) {
             return $this->sendResponse(true, 312, null, 'Validation error, recheck all fields.');
         }
-        //---------------------------Validation-------------------------------------
-
-
-
-
-        //------------------------------Duplicate check for email----------------------------------------
 
         $usersData = DB::table('users')
             ->where('email', $request->email)
@@ -681,13 +576,6 @@ class UserController extends Controllers\BaseController
             return $this->sendResponse(true, 223, null, 'Email already exist.');
         }
 
-        //------------------------------Duplicate check for email----------------------------------------
-
-
-
-
-
-        //--------------------------------------User Registration---------------------------------------------
 
         $input = $request->all(); //Store all request data in variable
         $input['user_type_id'] = 5; //Agent
@@ -720,10 +608,6 @@ class UserController extends Controllers\BaseController
         $success['full_name'] =  $user->full_name;
         $user_id = $user->id;
 
-        //-------------------------------------/User Registration---------------------------------------------
-
-
-
         if ($request->address != null) {
 
             $address_id = DB::table('addresses')->insertGetId(
@@ -739,12 +623,6 @@ class UserController extends Controllers\BaseController
                 'id'
             );
         }
-
-
-
-
-
-
         if ($request->resume_details != null) {
 
             $resume_id = DB::table('resumes')->insertGetId(
@@ -757,9 +635,6 @@ class UserController extends Controllers\BaseController
                 'id'
             );
         }
-
-
-
         if ($request->company_name != null || $request->company_registration_number != null) {
 
             $company_id = DB::table('companies')->insertGetId(
@@ -772,9 +647,6 @@ class UserController extends Controllers\BaseController
                 ],
                 'id'
             );
-
-
-
             if ($request->company_address != null) {
 
                 $address_id = DB::table('addresses')->insertGetId(
@@ -791,9 +663,6 @@ class UserController extends Controllers\BaseController
                 );
             }
         }
-
-
-
         if ($request->bank_name != null || $request->iban != null || $request->swift_bic_code != null || $request->branch_code != null || $request->account_title != null || $request->account_number != null) {
 
             $payment_method_id = DB::table('payment_methods')->insertGetId(
@@ -811,36 +680,49 @@ class UserController extends Controllers\BaseController
                 'id'
             );
         }
-
-
-
-
         $data = [
             'code' => 'https://banolive.com/sign-up/agency?admin=' . $nine_digit_code
         ];
-
-
-
-
-
         if ($success == true) {
             return $this->sendResponse(false, 200, $data, 'Admin register successfully.');
         } else {
             return $this->sendResponse(true, 233, null, 'Admin register failed.');
         }
-
-        //-------------------------------------------------------------------------
-
     }
 
-
+    public function resendCode(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'errors' => $validator->errors()]);
+        }
+        $email = $request->email;
+        $nine_digit_code = mt_rand(100000, 999999);
+        $email_found = User::where('email', $email)->count();
+        if ($email_found == 0) {
+            return $this->sendResponse(false, 200, null, 'User not found. Please confirm your email.');
+        } else {
+            $user = User::where('email', $email)->first();
+            $user->code = $nine_digit_code;
+            $user->save();
+            Mail::send('emails.verifyemail', ['otp' => $nine_digit_code], function ($message) use ($request) {
+                $message->to($request->email);
+                $message->subject('Verify Email');
+            });
+        }
+        if ($user == true) {
+            return $this->sendResponse(false, 200, null, 'Resend email sent successfuly.');
+        } else {
+            return $this->sendResponse(true, 233, null, 'Email sending failed.');
+        }
+    }
 
 
     public function SignUpUser(Request $request)
     {
 
-
-        //---------------------------Validation-------------------------------------
         $validator = Validator::make($request->all(), [
 
             'full_name' => 'required',
@@ -854,12 +736,6 @@ class UserController extends Controllers\BaseController
         if ($validator->fails()) {
             return $this->sendResponse(true, 312, null, 'Validation error, recheck all fields.');
         }
-        //---------------------------Validation-------------------------------------
-
-
-
-
-        //------------------------------Duplicate check for email----------------------------------------
 
         $usersData = DB::table('users')
             ->where('email', $request->email)
@@ -869,15 +745,9 @@ class UserController extends Controllers\BaseController
             return $this->sendResponse(true, 223, null, 'Email already exist.');
         }
 
-        //------------------------------Duplicate check for email----------------------------------------
-
-
-
-
-
-        //--------------------------------------User Registration---------------------------------------------
 
         $input = $request->all(); //Store all request data in variable
+        // dd($input);
         $input['user_type_id'] = 6; //User
         $input['country_code_id'] = 181;
 
@@ -887,22 +757,26 @@ class UserController extends Controllers\BaseController
 
         $input['no_of_followings'] = 0;
         $input['no_of_followers'] = 0;
-
+        //$input['country_code'] = $request->country_code;
+        
 
         $nine_digit_code = mt_rand(100000, 999999);
-
+        Mail::send('emails.verifyemail', ['otp' => $nine_digit_code], function ($message) use ($request) {
+            $message->to($request->email);
+            $message->subject('Verify Email');
+        });
         $input['code'] = $nine_digit_code;
 
 
         $input['status'] = 'Active';
 
         $input['password'] = bcrypt($input['password']); //Encrypt password
+        $input['country_code']=$request->country_code;
         $user = User::create($input); //create user put all information
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['full_name'] =  $user->full_name;
         $user_id = $user->id;
 
-        //-------------------------------------/User Registration---------------------------------------------
 
 
 
@@ -911,14 +785,95 @@ class UserController extends Controllers\BaseController
         } else {
             return $this->sendResponse(true, 233, null, 'User register failed.');
         }
+    }
 
-        //-------------------------------------------------------------------------
+    public function forgetpassword(Request $request)
+    {
 
+        $validator = Validator::make($request->all(), [
+
+            'email' => 'required|email',
+
+
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendResponse(true, 312, null, 'Emai Field is Required');
+        }
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
+        $otp = User::where('email', $email)->value('code');
+        if(!$user)
+        {
+            return response()->json(['status'=> true, 'message'=> "email not found"]);
+        }
+        else{
+            Mail::to($email)->send(new \App\Mail\verifyotp($otp));
+            
+            return response()->json(['status'=> true, 'message'=> "email has been send"]);
+        }
+    }
+
+    public function verifyotp(Request $request)
+    {
+        
+        $otp = $request->code;
+        $user = User::where('code' , $otp, 'email', $request->email)->first();
+        if(!$user)
+        {
+            return response()->json(['status'=> false, 'message'=> "OTP not exist"], 200);
+
+        }else{
+            return response()->json(['status'=> true, 'message'=> "VERIFIED"], 200);
+
+        }
     }
 
 
 
+    public function SignUpSocialUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
 
+            'email' => 'required',
+            'social_login_type' => 'required',
+            'social_login_id' => 'required',
+
+
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendResponse(true, 312, null, 'Emai Field is Required');
+        }
+        $user = new User();
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->email = $request->email;
+        $user->social_login_id = $request->social_login_id;
+        $user->social_login_type = $request->social_login_type;
+        if($request->has('image')){
+            
+            $thumbnailfiles = $request->file('image');
+            
+                $thumbnailfile_origninl_name =  $thumbnailfiles->getClientOriginalName();
+                $thumbnailfile_name = $thumbnailfile_origninl_name.time() . "." . $thumbnailfiles->getClientOriginalExtension();
+                $thumbnailfiles->move('storage/images/',$thumbnailfile_name);
+                $thumbnailpath = url('/').'/'.'storage/images/'.$thumbnailfile_name;
+                
+                $user->image  =  $thumbnailpath;
+    
+            
+        }
+        // dd($request);
+        $user->save();
+
+        
+                $user=  $user;
+        $token=  $user->createToken('MyApp')->accessToken;
+
+        
+               return response()->json(['status' => true, 'message' =>'User Login Successfully!', 'data' => $user,'token'=> $token ],200);
+    }
 
 
 
@@ -946,8 +901,6 @@ class UserController extends Controllers\BaseController
         }
 
 
-
-        //---------------------------Validation-------------------------------------
         $validator = Validator::make($request->all(), [
 
             'first_name' => 'required',
@@ -960,12 +913,6 @@ class UserController extends Controllers\BaseController
         if ($validator->fails()) {
             return $this->sendResponse(true, 312, null, 'Validation error, recheck all fields.');
         }
-        //---------------------------Validation-------------------------------------
-
-
-
-        //-------------------------------------Registration-----------------------------------------------
-
 
 
         $query = DB::table('users')
@@ -995,8 +942,6 @@ class UserController extends Controllers\BaseController
                 ]
             );
 
-        //------------------------------------/Registration-----------------------------------------------
-
 
 
         if ($query) {
@@ -1004,16 +949,12 @@ class UserController extends Controllers\BaseController
         } else {
             return $this->sendResponse(true, 233, null, 'User register failed.');
         }
-
-        //-------------------------------------------------------------------------
-
     }
 
     public function userDelete(Request $request)
     {
 
 
-        //---------------------------Validation-------------------------------------
         $validator = Validator::make($request->all(), [
 
             'id' => 'required',
@@ -1023,10 +964,6 @@ class UserController extends Controllers\BaseController
         if ($validator->fails()) {
             return $this->sendResponse(true, 312, null, 'Validation error, recheck all fields.');
         }
-        //---------------------------Validation-------------------------------------
-
-
-        //---------------------------Validation-------------------------------------
         $UserData = DB::table('users')
             ->leftJoin('user_types', 'users.user_type_id', '=', 'user_types.id')
             ->select(
@@ -1039,21 +976,12 @@ class UserController extends Controllers\BaseController
             )
             ->first();
 
-        //---------------------------Validation-------------------------------------
-
-
-
-
-        //-------------------------------------Delete-----------------------------------------------
 
         $query = DB::table('users')->where('id', '=', $request->id)->delete();
 
         if ($UserData->user_type_slug == 'agency') {
             $query = DB::table('agencies')->where('created_by_user_id', '=', $request->id)->delete();
         }
-
-        //------------------------------------/Delete-----------------------------------------------
-
 
 
         if (true) {
@@ -1587,34 +1515,31 @@ class UserController extends Controllers\BaseController
      */
     public function login(Request $request)
     {
-        if($request->email)
-        {
+        if ($request->email) {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 $user = Auth::user();
                 $success['token'] =  $user->createToken('MyApp')->accessToken;
-    
+
                 $success['user'] =  $user;
-    
+
                 $request->session()->put('project', $user);
-    
+
                 return $this->sendResponse(false, 200, $success, 'User login successfully.');
             } else {
                 return $this->sendResponse(true, 342, null, 'Email or password is incorrect.');
             }
-        }
-        else
-        {
+        } else {
             if (Auth::attempt(['number' => $request->number, 'password' => $request->password])) {
                 $user = Auth::user();
                 $success['token'] =  $user->createToken('MyApp')->accessToken;
-    
+
                 $success['user'] =  $user;
-    
+
                 $request->session()->put('project', $user);
-    
+
                 return $this->sendResponse(false, 200, $success, 'User login successfully.');
             } else {
-                return $this->sendResponse(true, 342, null, 'Email or password is incorrect.');
+                return $this->sendResponse(true, 342, null, 'Number or password is incorrect.');
             }
         }
     }
@@ -1694,53 +1619,33 @@ class UserController extends Controllers\BaseController
 
     public function validateCode(Request $request)
     {
-
-        //---------------------------Validation-------------------------------------
         $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
             'code' => 'required',
         ]);
-
         if ($validator->fails()) {
-            return $this->sendResponse(true, 312, null, 'Validation error, recheck all fields.');
+            return response()->json(['status' => false, 'errors' => $validator->errors()]);
         }
-        //---------------------------Validation-------------------------------------
-
-
-        //------------------------------Duplicate check for email----------------------------------------
-
-        $passwordResetCount = DB::table('password_resets')
-            ->where('code', $request->code)
-            ->where('status', 'Active')
-            ->count();
-
-        if ($passwordResetCount == 0) {
-            return $this->sendResponse(true, 223, null, 'Code is invalid.');
+        
+        $user = User::where('email', $request->email)->first();
+        //dd($user);
+        if($user)
+        {
+            
+            $data = User::where(['email' => $user->email, 'code'=> $request->code])->first();
+            
+            if($data){
+                //return response()->json('message', "VERIFIED");
+                return $this->sendResponse(false, 200, null, 'VERIFIED');
+            }
+            else{
+            //return response()->json('message', "I don't know");
+             return $this->sendResponse(true, 233, null, "OTP doesn't matched");
+            }   
         }
-
-        //------------------------------Duplicate check for email----------------------------------------
-
-
-
-        $passwordResetData = DB::table('password_resets')
-            ->where('code', $request->code)
-            ->where('status', 'Active')
-            ->first();
-
-
-
-
-
-
-        //-------------------------------------------------------------------------
-
-        if (true) {
-            return $this->sendResponse(false, 200, $passwordResetData->token, 'User register successfully.');
-        } else {
-            return $this->sendResponse(true, 233, null, 'User register failed.');
-        }
-
-        //-------------------------------------------------------------------------
-
+        else
+            //return response()->json('message', "email not exist");
+            return $this->sendResponse(true, 233, null, 'email not exist');
     }
 
     public function changePassword(Request $request)
@@ -3305,271 +3210,51 @@ class UserController extends Controllers\BaseController
     public function storyView(Request $request)
     {
 
+        $story = Story::with('stories')->get();
 
-
-        $galleryImageCount = $request->galleryImageCount;
-        $galleryImages = json_decode($request->galleryImages);
-
-
-
-        //---------------------------Validation-------------------------------------
-        $validator = Validator::make($request->all(), [
-
-            'id' => 'required',
-
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendResponse(true, 312, null, 'Validation error, recheck all fields.');
-        }
-        //---------------------------Validation-------------------------------------
-
-
-
-
-        $timezone = "Asia/Dhaka";
-        date_default_timezone_set($timezone);
-
-        $is_session = $this->GetSession();
-
-        if ($is_session) {
-            $session_user_id = $request->session()->get('project')->id;
-            $User = $this->GetUsersSqlData($request, $session_user_id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-        } else {
-            $User = null;
-        }
-
-
-        $Story = DB::table('stories')
-            ->leftJoin('users', 'stories.created_by_user_id', '=', 'users.id')
-            ->select(
-                'stories.id as id',
-                'stories.reference_id as reference_id',
-                'stories.reference_type as reference_type',
-
-                'stories.slug as slug',
-                'stories.description as description',
-                'stories.thumbnail as thumbnail',
-                'stories.published_at as published_at',
-                'stories.expires_at as expires_at',
-
-                'stories.status as status',
-                'stories.order_by as order_by',
-
-
-
-                'stories.created_by_comp_id as created_by_comp_id',
-
-                'stories.created_by_user_id as created_by_user_id',
-                'users.full_name as user_full_name',
-                'users.image as user_image',
-                'users.slug as user_slug',
-
-                'stories.updated_by_user_id as updated_by_user_id',
-                'stories.deleted_by_user_id as deleted_by_user_id',
-                'stories.created_at as created_at',
-                'stories.updated_at as updated_at',
-                'stories.deleted_at as deleted_at'
-
-            )
-            ->where('stories.id', $request->id)
-            ->where('stories.status', 'Active')
-            ->first();
-
-
-        $html = '<div class="modal-dialog modal-dialog-centered" style="max-width: 300px; margin: 5px auto;">
-                    <div class="modal-content">
-
-                        <div class="modal-body  d-flex align-items-center justify-content-center" style="min-height: 470px; padding: 0px;">
-
-                            <div style="position: absolute; top: 5px; right: 5px">
-                                <div style="background-color: red; border-radius: 50px; height: 23px; width: 23px; text-align: center" data-bs-dismiss="modal" aria-label="Close">
-                                    <i class="fa fa-times" style="font-size: 12px; color: white"></i>
-                                </div>
-                            </div>
-
-                            <img src="uploads/story/' . $Story->thumbnail . '" style="width: 100%">
-                        </div>
-                    </div>
-                </div>';
-
-
-        $data = [
-            'id' => $Story->id,
-            'thumbnail' => $Story->thumbnail,
-            'html' => $html,
-        ];
-
-
-        if (true) {
-            return $this->sendResponse(false, 200, $data, 'Story successfully viewed.');
-        } else {
-            return $this->sendResponse(true, 233, null, 'Story viewed failed.');
-        }
-
-        //-------------------------------------------------------------------------
-
+        return $this->sendResponse(false, 200, null, $story);
     }
 
     public function storyCreate(Request $request)
     {
+        $story = new Story();
+        $story->created_by_user_id = $request->created_by_user_id;
 
+        if($request->has('thumbnail')){
+            
+            $thumbnailfiles = $request->file('thumbnail');
+            
+                $thumbnailfile_origninl_name =  $thumbnailfiles->getClientOriginalName();
+                $thumbnailfile_name = $thumbnailfile_origninl_name.time() . "." . $thumbnailfiles->getClientOriginalExtension();
+                $thumbnailfiles->move('storage/images/',$thumbnailfile_name);
+                $thumbnailpath = url('/').'/'.'storage/auction/'.$thumbnailfile_name;
+                
+                $story->thumbnail  =  $thumbnailpath;
+    
+            }
 
+            $story->save();
 
-        $galleryImageCount = $request->galleryImageCount;
-        $galleryImages = json_decode($request->galleryImages);
-
-
-
-        //---------------------------Validation-------------------------------------
-        $validator = Validator::make($request->all(), [
-
-            'privacy' => 'required',
-            'description' => 'required',
-
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendResponse(true, 312, null, 'Validation error, recheck all fields.');
-        }
-        //---------------------------Validation-------------------------------------
-
-
-
-
-        $timezone = "Asia/Dhaka";
-        date_default_timezone_set($timezone);
-
-        $is_session = $this->GetSession();
-
-        if ($is_session) {
-            $session_user_id = $request->session()->get('project')->id;
-            $User = $this->GetUsersSqlData($request, $session_user_id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-        } else {
-            $User = null;
-        }
-
-
-
-        //-------------------------------------Registration-----------------------------------------------
-
-
-        $story_id = DB::table('stories')->insertGetId(
-            [
-                'privacy_id' => $request->privacy,
-                'reference_id' => null,
-                'reference_type' => null,
-                'slug' => $request->description,
-                'description' => $request->description,
-
-
-
-                'status' => 'Active',
-                'created_by_user_id' => $session_user_id,
-            ],
-            'id'
-        );
-
-        //------------------------------------/Registration-----------------------------------------------
-
-
-
-
-        // -------------- For Gallery Insert --------------
-        if ($galleryImageCount > 0) {
-
-            $DirectoryTempPath = $this->directoryForTemp();
-            $DirectoryImagesPath = $this->directoryForImages();
-
-            foreach ($galleryImages as $key => $dataTemp) {
-
-                $serverResponseImage = $dataTemp->serverResponseFileName;
-
-
-                if ($key == 0) {
-
-                    $query = DB::table('stories')
-                        ->where('id', '=', $story_id)
-                        ->update(
-                            [
-                                'thumbnail' => $serverResponseImage,
-                            ]
-                        );
+            if($request->has('file')){
+                $image = $request->file('file');
+                foreach($image as $index => $files) {
+        
+                    $file_origninl_name =  $files->getClientOriginalName();
+                    $file_name = $file_origninl_name.time().$index . "." . $files->getClientOriginalExtension();
+                    $files->move('storage/images/',$file_name);
+                    $imagepath = url('/').'/'.'storage/images/'.$file_name;
+        
+                    $client = new Gallery();
+                    $client->reference_id = $story->id;
+                    $client->source = $imagepath;
+                    $client->save();
+        
+                    
+        
+                }
                 }
 
-
-                //                if($serverResponseImage!=null && $serverResponseImage!='' && $serverResponseImage!=' ' && File::exists(public_path('uploads/'.$DirectoryTempPath.'/'.$serverResponseImage))){
-                //
-                //
-                //                    if (!File::exists(public_path('uploads/'.$DirectoryImagesPath)))
-                //                    {
-                //
-                //                        File::makeDirectory('uploads/'.$DirectoryImagesPath, 0777, true, true);
-                //
-                //                    }
-                //
-                //                    File::move(public_path('uploads/'.$DirectoryTempPath.'/'.$serverResponseImage), public_path('uploads/'.$DirectoryImagesPath.'/'.$serverResponseImage));
-                //
-                //                    $source=$DirectoryImagesPath.'/'.$serverResponseImage;
-                //                }else{
-                //                    $source=null;
-                //                }
-                //
-                //                if($source!=null){
-                //                    $query=DB::table('galleries')->insert(
-                //                        [
-                //                            'reference_id' => $newsfeed_id,
-                //                            'reference_type' => 'Newsfeed',
-                //                            'title' => $request->description,
-                //                            'caption' => $request->description,
-                //                            'alt_text' => $request->description,
-                //                            'source' => $source,
-                //                            'thumbnail' => $source,
-                //                            'status' => 'Active',
-                //                        ]
-                //                    );
-                //                }
-
-
-
-            }
-        }
-        // -------------- For Gallery Insert --------------
-
-
-
-
-        //---------------------Increment---------------------
-
-        //        $postsData=DB::table('posts')
-        ////            ->where('created_by_user_id',$session_user_id)
-        ////            ->count();
-        ////
-        ////
-        ////        $query=DB::table('users')
-        ////            ->where('id', $session_user_id)
-        ////            ->update(
-        ////                [
-        ////                    'count_posts' => $postsData,
-        ////                ]
-        ////            );
-
-
-        //---------------------Increment---------------------
-
-
-
-
-
-
-        if (true) {
-            return $this->sendResponse(false, 200, null, 'Story has been created successfully.');
-        } else {
-            return $this->sendResponse(true, 233, null, 'Story has been failed.');
-        }
-
-        //-------------------------------------------------------------------------
-
+                return $this->sendResponse(false, 200, null, 'Story Added Successfully.');
     }
 
     public function storyDelete(Request $request)
@@ -3841,7 +3526,60 @@ class UserController extends Controllers\BaseController
     }
 
     // - - - - - - - - - - - - - - - - - - - /Live - - - - - - - - - - - - - - - - - - - - - - - - -
+public function updatepassword(Request $request)
+    {
+        $this->validate($request, [
+            'newpassword' => 'required',
+        ]);
 
+        $emails = $request->email;
+        $numbers = $request->number;
+
+        $email = User::where('email', $emails)->first();
+        $number = User::where('number', $numbers)->first();
+
+        $newpass = $request->newpassword;
+        $confirmpass = $request->confirmpassword;
+
+        if($request->email)
+        {
+            if ($email) {
+                if ($newpass == $confirmpass) {
+    
+                    $users = User::where('email', $email->email)->first();
+                    $users->password = Hash::make($request->confirmpassword);
+                    $users->save();
+                    $response = ['status' => true, 'message' => "Password  Updated Successfully! "];
+                    return response($response, 200);
+    
+            } else {
+                    $response = ['status' => true, 'message' => "New Password and Confirm password does not matched"];
+                    return response($response, 200);
+                }
+            } else {
+                $response = ['status' => true, 'message' => "User Does Not Exist"];
+                return response($response, 422);
+            }
+        }else{
+            if ($number) {
+                if ($newpass == $confirmpass) {
+    
+                    $users = User::where('number', $number->number)->first();
+                    $users->password = Hash::make($request->confirmpassword);
+                    $users->save();
+                    $response = ['status' => true, 'message' => "Password  Updated Successfully! "];
+                    return response($response, 200);
+    
+            } else {
+                    $response = ['status' => true, 'message' => "New Password and Confirm password does not matched"];
+                    return response($response, 200);
+                }
+            } else {
+                $response = ['status' => true, 'message' => "User Does Not Exist"];
+                return response($response, 422);
+            }
+        }
+    }
 
 
 }

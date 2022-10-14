@@ -28,23 +28,18 @@ class User extends Authenticatable
         'number',
         'gender',
         'image',
-
         'password',
-
         'id_front',
         'id_back',
         'id_number',
-
         'count_posts',
         'count_followers',
         'count_following',
         'no_of_followings',
         'no_of_followers',
+        'country_code',
         'code',
         'reference_code',
-
-
-
         'status',
     ];
 
