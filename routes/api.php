@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\ApiBannerController;
 use App\Http\Controllers\API\SettingController;
 use App\Http\Controllers\API\SubscriberController;
 use Illuminate\Http\Request;
@@ -102,7 +103,7 @@ Route::post('contact/view', [UserController::class, 'contactView']);
 
 
 //Routes for Banners:
-Route::get('banners/list', [BannerController::class, 'getListOfbanners']);
+Route::get('banners', [ApiBannerController::class, 'getListOfbanners']);
 //End Routes for Banners
 
 
@@ -198,6 +199,8 @@ Route::post('newsfeed/gallery/delete', [UserController::class, 'newsfeedGalleryD
 
 
 Route::get('story/view', [UserController::class, 'storyView']);
+dd('---');
+Route::post('story/addViewers', [UserController::class, 'addStoryViewers']);
 Route::post('story/create', [UserController::class, 'storyCreate']);
 Route::post('story/delete', [UserController::class, 'storyDelete']);
 Route::post('story/report', [UserController::class, 'storyReport']);

@@ -16,7 +16,6 @@ class BannerController extends GeneralController
      */
     public function index(Request $request)
     {
-
         $is_session = $this->GetSession();
 
         if ($is_session) {

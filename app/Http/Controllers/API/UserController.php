@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers;
 use App\Models\Gallery;
 use App\Models\Story;
+use App\Models\StoryViewer;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -211,6 +212,38 @@ class UserController extends Controllers\BaseController
             return $this->sendResponse(false, 200, $data, 'Admin register successfully.');
         } else {
             return $this->sendResponse(true, 233, null, 'Admin register failed.');
+        }
+    }
+
+    // Story Viewers
+    public function addStoryViewers(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'story_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendResponse(true, 312, null, $validator->errors());
+        }
+        $data = [
+            'user_id' => $request->user_id,
+            'story_id' => $request->story_id
+        ];
+        $viewer = StoryViewer::where(['story_id' => $request->story_id, 'user_id' => $request->user_id])->first();
+        if ($viewer == null) {
+            $story = Story::where('id', $request->story_id)->first();
+            if ($story) {
+                $user = StoryViewer::create($data);
+                $count = $story->viewers + 1;
+                $viewers_counter = Story::where('id', $request->story_id)->update(['viewers' => $count]);
+                return $this->sendResponse(false, 200, null, 'Viewer Added Successfully');
+            } else {
+                return $this->sendResponse(true, 223, null, "Story doesn't exist!");
+            }
+        } else {
+            return $this->sendResponse(true, 223, null, 'Viewer Already Exists!');
         }
     }
 
@@ -724,8 +757,6 @@ class UserController extends Controllers\BaseController
     {
 
         $validator = Validator::make($request->all(), [
-
-            'full_name' => 'required',
             'email' => 'required|email',
             //            'number' => 'required',
             'password' => 'required',
@@ -758,27 +789,28 @@ class UserController extends Controllers\BaseController
         $input['no_of_followings'] = 0;
         $input['no_of_followers'] = 0;
         //$input['country_code'] = $request->country_code;
-        
+
 
         $nine_digit_code = mt_rand(100000, 999999);
-        Mail::send('emails.verifyemail', ['otp' => $nine_digit_code], function ($message) use ($request) {
+
+        $mail =   Mail::send('emails.verifyemail', ['otp' => $nine_digit_code], function ($message) use ($request) {
             $message->to($request->email);
             $message->subject('Verify Email');
         });
+        if ($mail == false) {
+            return $this->sendResponse(true, 233, null, 'User register failed.');
+        }
         $input['code'] = $nine_digit_code;
 
 
         $input['status'] = 'Active';
 
         $input['password'] = bcrypt($input['password']); //Encrypt password
-        $input['country_code']=$request->country_code;
+        $input['country_code'] = $request->country_code;
         $user = User::create($input); //create user put all information
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['full_name'] =  $user->full_name;
         $user_id = $user->id;
-
-
-
 
         if ($success == true) {
             return $this->sendResponse(false, 200, null, 'User register successfully.');
@@ -803,29 +835,24 @@ class UserController extends Controllers\BaseController
         $email = $request->email;
         $user = User::where('email', $email)->first();
         $otp = User::where('email', $email)->value('code');
-        if(!$user)
-        {
-            return response()->json(['status'=> true, 'message'=> "email not found"]);
-        }
-        else{
+        if (!$user) {
+            return response()->json(['status' => true, 'message' => "email not found"]);
+        } else {
             Mail::to($email)->send(new \App\Mail\verifyotp($otp));
-            
-            return response()->json(['status'=> true, 'message'=> "email has been send"]);
+
+            return response()->json(['status' => true, 'message' => "email has been send"]);
         }
     }
 
     public function verifyotp(Request $request)
     {
-        
+
         $otp = $request->code;
-        $user = User::where('code' , $otp, 'email', $request->email)->first();
-        if(!$user)
-        {
-            return response()->json(['status'=> false, 'message'=> "OTP not exist"], 200);
-
-        }else{
-            return response()->json(['status'=> true, 'message'=> "VERIFIED"], 200);
-
+        $user = User::where('code', $otp, 'email', $request->email)->first();
+        if (!$user) {
+            return response()->json(['status' => false, 'message' => "OTP not exist"], 200);
+        } else {
+            return response()->json(['status' => true, 'message' => "VERIFIED"], 200);
         }
     }
 
@@ -851,28 +878,26 @@ class UserController extends Controllers\BaseController
         $user->email = $request->email;
         $user->social_login_id = $request->social_login_id;
         $user->social_login_type = $request->social_login_type;
-        if($request->has('image')){
-            
+        if ($request->has('image')) {
+
             $thumbnailfiles = $request->file('image');
-            
-                $thumbnailfile_origninl_name =  $thumbnailfiles->getClientOriginalName();
-                $thumbnailfile_name = $thumbnailfile_origninl_name.time() . "." . $thumbnailfiles->getClientOriginalExtension();
-                $thumbnailfiles->move('storage/images/',$thumbnailfile_name);
-                $thumbnailpath = url('/').'/'.'storage/images/'.$thumbnailfile_name;
-                
-                $user->image  =  $thumbnailpath;
-    
-            
+
+            $thumbnailfile_origninl_name =  $thumbnailfiles->getClientOriginalName();
+            $thumbnailfile_name = $thumbnailfile_origninl_name . time() . "." . $thumbnailfiles->getClientOriginalExtension();
+            $thumbnailfiles->move('storage/images/', $thumbnailfile_name);
+            $thumbnailpath = url('/') . '/' . 'storage/images/' . $thumbnailfile_name;
+
+            $user->image  =  $thumbnailpath;
         }
         // dd($request);
         $user->save();
 
-        
-                $user=  $user;
-        $token=  $user->createToken('MyApp')->accessToken;
 
-        
-               return response()->json(['status' => true, 'message' =>'User Login Successfully!', 'data' => $user,'token'=> $token ],200);
+        $user =  $user;
+        $token =  $user->createToken('MyApp')->accessToken;
+
+
+        return response()->json(['status' => true, 'message' => 'User Login Successfully!', 'data' => $user, 'token' => $token], 200);
     }
 
 
@@ -1502,12 +1527,6 @@ class UserController extends Controllers\BaseController
 
     }
 
-
-
-
-
-
-
     /**
      * Login api
      *
@@ -1518,17 +1537,22 @@ class UserController extends Controllers\BaseController
         if ($request->email) {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 $user = Auth::user();
+
                 $success['token'] =  $user->createToken('MyApp')->accessToken;
 
                 $success['user'] =  $user;
 
                 $request->session()->put('project', $user);
-
-                return $this->sendResponse(false, 200, $success, 'User login successfully.');
+                if ($user->is_verified == 1) {
+                    return $this->sendResponse(false, 200, $success, 'User login successfully.');
+                } else {
+                    return $this->sendResponse(true, 342, null, 'User is not Verified!');
+                }
             } else {
                 return $this->sendResponse(true, 342, null, 'Email or password is incorrect.');
             }
         } else {
+
             if (Auth::attempt(['number' => $request->number, 'password' => $request->password])) {
                 $user = Auth::user();
                 $success['token'] =  $user->createToken('MyApp')->accessToken;
@@ -1626,24 +1650,22 @@ class UserController extends Controllers\BaseController
         if ($validator->fails()) {
             return response()->json(['status' => false, 'errors' => $validator->errors()]);
         }
-        
+
         $user = User::where('email', $request->email)->first();
         //dd($user);
-        if($user)
-        {
-            
-            $data = User::where(['email' => $user->email, 'code'=> $request->code])->first();
-            
-            if($data){
+        if ($user) {
+
+            $data = User::where(['email' => $user->email, 'code' => $request->code])->first();
+
+            if ($data) {
                 //return response()->json('message', "VERIFIED");
+                User::where('id', $data->id)->update(['is_verified' => 1]);
                 return $this->sendResponse(false, 200, null, 'VERIFIED');
+            } else {
+                //return response()->json('message', "I don't know");
+                return $this->sendResponse(true, 233, null, "OTP doesn't matched");
             }
-            else{
-            //return response()->json('message', "I don't know");
-             return $this->sendResponse(true, 233, null, "OTP doesn't matched");
-            }   
-        }
-        else
+        } else
             //return response()->json('message', "email not exist");
             return $this->sendResponse(true, 233, null, 'email not exist');
     }
@@ -3220,41 +3242,37 @@ class UserController extends Controllers\BaseController
         $story = new Story();
         $story->created_by_user_id = $request->created_by_user_id;
 
-        if($request->has('thumbnail')){
-            
+        if ($request->has('thumbnail')) {
+
             $thumbnailfiles = $request->file('thumbnail');
-            
-                $thumbnailfile_origninl_name =  $thumbnailfiles->getClientOriginalName();
-                $thumbnailfile_name = $thumbnailfile_origninl_name.time() . "." . $thumbnailfiles->getClientOriginalExtension();
-                $thumbnailfiles->move('storage/images/',$thumbnailfile_name);
-                $thumbnailpath = url('/').'/'.'storage/auction/'.$thumbnailfile_name;
-                
-                $story->thumbnail  =  $thumbnailpath;
-    
+
+            $thumbnailfile_origninl_name =  $thumbnailfiles->getClientOriginalName();
+            $thumbnailfile_name = $thumbnailfile_origninl_name . time() . "." . $thumbnailfiles->getClientOriginalExtension();
+            $thumbnailfiles->move('storage/images/', $thumbnailfile_name);
+            $thumbnailpath = url('/') . '/' . 'storage/auction/' . $thumbnailfile_name;
+
+            $story->thumbnail  =  $thumbnailpath;
+        }
+
+        $story->save();
+
+        if ($request->has('file')) {
+            $image = $request->file('file');
+            foreach ($image as $index => $files) {
+
+                $file_origninl_name =  $files->getClientOriginalName();
+                $file_name = $file_origninl_name . time() . $index . "." . $files->getClientOriginalExtension();
+                $files->move('storage/images/', $file_name);
+                $imagepath = url('/') . '/' . 'storage/images/' . $file_name;
+
+                $client = new Gallery();
+                $client->reference_id = $story->id;
+                $client->source = $imagepath;
+                $client->save();
             }
+        }
 
-            $story->save();
-
-            if($request->has('file')){
-                $image = $request->file('file');
-                foreach($image as $index => $files) {
-        
-                    $file_origninl_name =  $files->getClientOriginalName();
-                    $file_name = $file_origninl_name.time().$index . "." . $files->getClientOriginalExtension();
-                    $files->move('storage/images/',$file_name);
-                    $imagepath = url('/').'/'.'storage/images/'.$file_name;
-        
-                    $client = new Gallery();
-                    $client->reference_id = $story->id;
-                    $client->source = $imagepath;
-                    $client->save();
-        
-                    
-        
-                }
-                }
-
-                return $this->sendResponse(false, 200, null, 'Story Added Successfully.');
+        return $this->sendResponse(false, 200, null, 'Story Added Successfully.');
     }
 
     public function storyDelete(Request $request)
@@ -3526,7 +3544,7 @@ class UserController extends Controllers\BaseController
     }
 
     // - - - - - - - - - - - - - - - - - - - /Live - - - - - - - - - - - - - - - - - - - - - - - - -
-public function updatepassword(Request $request)
+    public function updatepassword(Request $request)
     {
         $this->validate($request, [
             'newpassword' => 'required',
@@ -3541,18 +3559,16 @@ public function updatepassword(Request $request)
         $newpass = $request->newpassword;
         $confirmpass = $request->confirmpassword;
 
-        if($request->email)
-        {
+        if ($request->email) {
             if ($email) {
                 if ($newpass == $confirmpass) {
-    
+
                     $users = User::where('email', $email->email)->first();
                     $users->password = Hash::make($request->confirmpassword);
                     $users->save();
                     $response = ['status' => true, 'message' => "Password  Updated Successfully! "];
                     return response($response, 200);
-    
-            } else {
+                } else {
                     $response = ['status' => true, 'message' => "New Password and Confirm password does not matched"];
                     return response($response, 200);
                 }
@@ -3560,17 +3576,16 @@ public function updatepassword(Request $request)
                 $response = ['status' => true, 'message' => "User Does Not Exist"];
                 return response($response, 422);
             }
-        }else{
+        } else {
             if ($number) {
                 if ($newpass == $confirmpass) {
-    
+
                     $users = User::where('number', $number->number)->first();
                     $users->password = Hash::make($request->confirmpassword);
                     $users->save();
                     $response = ['status' => true, 'message' => "Password  Updated Successfully! "];
                     return response($response, 200);
-    
-            } else {
+                } else {
                     $response = ['status' => true, 'message' => "New Password and Confirm password does not matched"];
                     return response($response, 200);
                 }
@@ -3580,6 +3595,4 @@ public function updatepassword(Request $request)
             }
         }
     }
-
-
 }

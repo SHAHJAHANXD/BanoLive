@@ -11,7 +11,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\DashboardController;
-
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -285,4 +285,16 @@ route::get('/setting/storage', function () {
 route::get('/setting/key-generate', function () {
     $exitCode = Artisan::call('key:generate');
     return 'Key Generated';
+});
+
+Route::get('/clear-cache', function () {
+    Artisan::call('route:clear');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('optimize');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    dd("route clear");
 });
